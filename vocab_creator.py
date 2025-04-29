@@ -9,6 +9,10 @@ def create_vocab(text_file_path):
     preprocessed = [word.strip() for word in preprocessed if word.strip()]
 
     all_words = sorted(set(preprocessed))
-    vocab = {token: integer for integer, token in enumerate(set(all_words))}
+
+    # Special context tokens here
+    all_words.extend(['<|unk|>', '<|endoftext|>'])
+
+    vocab = {token: integer for integer, token in enumerate(all_words)}
 
     return vocab

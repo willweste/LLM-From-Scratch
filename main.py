@@ -1,7 +1,7 @@
 import re
 from tokenizer import SimpleTokenizerV1
 from vocab_creator import create_vocab
-
+from data_sampling import TextSummarizationDataset
 '''''
 with open('the-verdict.txt', "r", encoding="utf-8") as file:
     raw_text = file.read()
@@ -36,12 +36,33 @@ for token, word in enumerate(all_words):
 
 # First create the vocab the encoder and decoder will use
 vocab = create_vocab("the-verdict.txt")
-#print(vocab)
+for i, item in enumerate(list(vocab.items())[-5:]):
+    print(item)
+
+
 tokenizer_object = SimpleTokenizerV1(vocab)
-text = "It's the last he painted, you know."
+text1 = "Hello, do you like tea?"
+text2 = "In the sunlit terraces of the palace."
+text = " <|endoftext|> ".join((text1, text2))
 
 encoded_text = tokenizer_object.encode(text)
 print(encoded_text)
 
 decoded_text = tokenizer_object.decode(encoded_text)
 print(decoded_text)
+
+
+# First create the vocab the encoder and decoder will use
+vocab = create_vocab("the-verdict.txt")
+print(f'This my vocab size: {len(vocab)}')
+# Create a tokenizer object to use
+tokenizer_object = SimpleTokenizerV1(vocab)
+
+# Load in our text we want to use
+with open("the-verdict.txt") as file:
+    raw_text = file.read()
+
+enc_text = tokenizer_object.encode(raw_text)
+print(len(enc_text))
+sample_enc = enc_text[:50]
+
